@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
-import { CircularProgress, Container, Stack } from '@mui/material'
+import { Container, Stack } from '@mui/material'
 
 import { ProgressBar, StyledButton, Wrapper } from './SignUp.styled'
 import { StepComponents } from './StepComponents'
@@ -71,11 +71,7 @@ export const SignUp = () => {
                     headerChildren={
                         <Stack direction={'row'} sx={{ gap: { xs: 1.25, md: 3.25 } }}>
                             <StyledButton onClick={handlePrevStep(step, setStep, navigate)}>Go Back</StyledButton>
-                            <StyledButton
-                                type="submit"
-                                disabled={loading}
-                                endIcon={loading && <CircularProgress size={25} />}
-                            >
+                            <StyledButton type="submit" loading={loading}>
                                 Continue
                             </StyledButton>
                         </Stack>

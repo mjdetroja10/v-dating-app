@@ -5,6 +5,11 @@ export const OUR_MISSION_URL = '/our-mission'
 export const LOGIN_URL = '/login'
 export const SIGNUP_URL = '/sign-up'
 
+export const FORGOT_PASSWORD_URL = '/forgot-password'
+
 export const HOME_URL = '/'
 
 export const DISCOVER_URL = '/discover'
+export const MY_CONNECTION_URL = '/my-connections'
+export const MY_PROFILE_URL = '/my-profile'
+export const VALADATIONS_URL = '/valadations'

@@ -1,5 +1,6 @@
-import { DISCOVER_URL } from 'Application/Constants/RouteConstant'
+import { DISCOVER_URL, FORGOT_PASSWORD_URL } from 'Application/Constants/RouteConstant'
 import { useFormSubmit } from 'Application/Hooks/useFormSubmit'
+import { AlertComponent } from 'Application/Molecules/Atoms/AlertComponent/AlertComponent'
 import { CheckboxController } from 'Infrasctructure/FormControllers/CheckboxController'
 import { StyledLabel } from 'Infrasctructure/FormControllers/index.styled'
 import { InputController } from 'Infrasctructure/FormControllers/InputController'
@@ -9,7 +10,7 @@ import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { Alert, Box, Snackbar, Stack, Typography } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 
 import { LoginButton, LoginFormWrapper } from '../Login.styled'
 
@@ -40,7 +41,7 @@ export const LoginForm = () => {
 
     const { handleSubmit, setError } = methods
 
-    const [formSubmit] = useFormSubmit({
+    const [formSubmit, loading] = useFormSubmit({
         request: LoginRequest,
         onSuccess: onSuccess(navigate),
         onError: onError(setError, setErrorMessage),
@@ -48,20 +49,7 @@ export const LoginForm = () => {
 
     return (
         <FormProvider {...methods}>
-            {errorMessage && (
-                <Box sx={{ width: 500 }}>
-                    <Snackbar
-                        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-                        open={Boolean(errorMessage)}
-                        autoHideDuration={6000}
-                        onClose={() => setErrorMessage('')}
-                    >
-                        <Alert onClose={() => setErrorMessage('')} severity="error" sx={{ minWidth: '250px' }}>
-                            {errorMessage}
-                        </Alert>
-                    </Snackbar>
-                </Box>
-            )}
+            {errorMessage && <AlertComponent message={errorMessage} type="error" onClose={() => setErrorMessage('')} />}
             <LoginFormWrapper component="form" onSubmit={handleSubmit(formSubmit)}>
                 <Typography variant="h3" color="primary" align="center" mb={7.5}>
                     Welcome Back!
@@ -77,14 +65,16 @@ export const LoginForm = () => {
                     <Box>
                         <Stack direction="row" justifyContent="space-between" mb={1.25}>
                             <StyledLabel sx={{ margin: '0 !important' }}>Password:</StyledLabel>
-                            <Link>Forgot Password?</Link>
+                            <Link to={FORGOT_PASSWORD_URL}>Forgot Password?</Link>
                         </Stack>
                         <PasswordController name="password" />
 
                         <CheckboxController name="rememberMe" label="Remember Me" />
                     </Box>
                     <Box sx={{ textAlign: 'center' }}>
-                        <LoginButton type="submit">Log In</LoginButton>
+                        <LoginButton type="submit" loading={loading}>
+                            Log In
+                        </LoginButton>
                     </Box>
                 </Stack>
             </LoginFormWrapper>

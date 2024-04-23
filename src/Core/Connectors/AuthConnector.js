@@ -10,4 +10,8 @@ export class AuthConnector {
     static async signUp(body) {
         return fetchWrapper.formDataSubmit(`${baseUrl}/sign-up`, { body })
     }
+
+    static async forgotPassword(body) {
+        return fetchWrapper.post(`${baseUrl}/forgot-password`, { body })
+    }
 }
