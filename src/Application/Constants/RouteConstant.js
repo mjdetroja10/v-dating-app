@@ -6,6 +6,7 @@ export const LOGIN_URL = '/login'
 export const SIGNUP_URL = '/sign-up'
 
 export const FORGOT_PASSWORD_URL = '/forgot-password'
+export const RESET_PASSWORD_URL = '/reset-password/:code'
 
 export const HOME_URL = '/'
 

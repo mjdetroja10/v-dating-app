@@ -14,4 +14,8 @@ export class AuthConnector {
     static async forgotPassword(body) {
         return fetchWrapper.post(`${baseUrl}/forgot-password`, { body })
     }
+
+    static async resetPassword(body) {
+        return fetchWrapper.post(`${baseUrl}/reset-password`, { body })
+    }
 }
