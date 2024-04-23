@@ -1,5 +1,11 @@
+import { theme } from 'Application/Theme'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+
+import 'Application/styles/global.css'
+
+import { ThemeProvider } from '@mui/material'
 
 import { App } from './App'
 import reportWebVitals from './reportWebVitals'
@@ -8,7 +14,11 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
     <React.StrictMode>
-        <App />
+        <ThemeProvider theme={theme}>
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
+        </ThemeProvider>
     </React.StrictMode>
 )
 
