@@ -35,6 +35,7 @@ export const StyledInput = styled(TextField)(({ theme }) => ({
 
 export const StyledRadioLabel = styled(FormControlLabel)(({ theme }) => ({
     '&': {
+        userSelect: 'none',
         backgroundColor: '#fbfdff66',
         borderRadius: theme.spacing(1),
         padding: theme.spacing(2, 2.5),
@@ -57,7 +58,8 @@ export const StyledRadioLabel = styled(FormControlLabel)(({ theme }) => ({
 export const StyledCheckboxLabel = styled(FormControlLabel)(({ theme }) => ({
     '&': {
         backgroundColor: '#fbfdff66',
-        borderRadius: theme.spacing(5),
+        userSelect: 'none',
+        borderRadius: theme.spacing(2.5),
         padding: theme.spacing(1, 2.5),
         border: '1px solid #145CA8',
         color: theme.palette.black.dark,
