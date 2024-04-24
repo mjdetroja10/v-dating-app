@@ -31,7 +31,7 @@ const getContent = (item, navigate) => {
     }
 }
 
-export const Header = ({ menu = [], headerChildren }) => {
+export const Header = ({ menu = [], headerChildren = null }) => {
     const [open, setOpen] = useState(false)
 
     const smallDevices = useMediaQuery((theme) => theme.breakpoints.down('sm'))
@@ -72,7 +72,7 @@ export const Header = ({ menu = [], headerChildren }) => {
                               ))}
                           </Box>
                       ))}
-                {!headerChildren && (
+                {!headerChildren && menu.length !== 0 && (
                     <Fragment>
                         <IconButton sx={{ display: { xs: 'block', md: 'none' } }} onClick={toggleDrawer}>
                             <BarsIcon height={40} width={40} />

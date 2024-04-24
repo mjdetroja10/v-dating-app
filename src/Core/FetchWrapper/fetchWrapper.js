@@ -34,7 +34,7 @@ async function handleResponse(response) {
     const data = await response.json()
 
     if (!response.ok) {
-        return { error: data?.data?.errors }
+        return { error: data?.data?.errors || data?.message }
     }
 
     return { data: data?.data || data?.message }
