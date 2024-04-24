@@ -1,10 +1,18 @@
-import { EmailVerify } from 'Application/Components/auth/EmailVerify/EmailVerify'
-import { ForgotPassoword } from 'Application/Components/auth/ForgotPassoword/ForgotPassoword'
-import { Login } from 'Application/Components/auth/Login/Login'
-import { ResetPassword } from 'Application/Components/auth/ResetPassword/ResetPassword'
-import { SignUp } from 'Application/Components/auth/SignUp/SignUp'
-import { Home } from 'Application/Components/Home/Home'
 import {
+    CommonThreads,
+    DiscoverComponent,
+    EmailVerify,
+    ForgotPassoword,
+    Home,
+    Login,
+    MyConnections,
+    MyProfile,
+    ResetPassword,
+    SignUp,
+    Valadations,
+} from 'Application/Components'
+import {
+    COMMON_THREADS_URL,
     DISCOVER_URL,
     EMAIL_VERIFY_URL,
     FORGOT_PASSWORD_URL,
@@ -23,10 +31,12 @@ import { Route, Routes } from 'react-router-dom'
 export const App = () => {
     return (
         <Routes>
+            {/*  public routes */}
             <Route path={HOME_URL} element={<Home />} />
             <Route path={FORGOT_PASSWORD_URL} element={<ForgotPassoword />} />
             <Route path={RESET_PASSWORD_URL} element={<ResetPassword />} />
             <Route path={EMAIL_VERIFY_URL} element={<EmailVerify />} />
+            {/*  public routes */}
 
             {/* un protected routes */}
             <Route element={<UnAuthLayout />}>
@@ -37,10 +47,11 @@ export const App = () => {
 
             {/* protected routes */}
             <Route element={<AuthLayout />}>
-                <Route path={DISCOVER_URL} element={<h2>discover page</h2>} />
-                <Route path={MY_CONNECTION_URL} element={<h2>my-connections page</h2>} />
-                <Route path={MY_PROFILE_URL} element={<h2>my-profile page</h2>} />
-                <Route path={VALADATIONS_URL} element={<h2>valadations page</h2>} />
+                <Route path={DISCOVER_URL} element={<DiscoverComponent />} />
+                <Route path={MY_CONNECTION_URL} element={<MyConnections />} />
+                <Route path={MY_PROFILE_URL} element={<MyProfile />} />
+                <Route path={VALADATIONS_URL} element={<Valadations />} />
+                <Route path={COMMON_THREADS_URL} element={<CommonThreads />} />
             </Route>
             {/* protected routes */}
 

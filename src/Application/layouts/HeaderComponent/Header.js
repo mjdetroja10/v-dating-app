@@ -1,14 +1,14 @@
 import { MENU_ITEM_TYPE } from 'Application/Constants/HeaderConstant'
-import { HOME_URL, LOGIN_URL } from 'Application/Constants/RouteConstant'
+import { DISCOVER_URL, HOME_URL, LOGIN_URL } from 'Application/Constants/RouteConstant'
 import { Button } from 'Application/Molecules/Atoms/Button/Button'
 import { BarsIcon } from 'Application/Molecules/Icons/BarsIcon'
 import PropTypes from 'prop-types'
 import { Fragment, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import { AppBar, Box, Drawer, IconButton, Toolbar, useMediaQuery } from '@mui/material'
+import { Box, Drawer, IconButton, useMediaQuery } from '@mui/material'
 
-import { DesktopLogo, NavLink } from './Header.styled'
+import { DesktopLogo, MobileContentWrapper, MuiAppBar, NavLink, StyledToolbar } from './Header.styled'
 
 const getContent = (item, navigate) => {
     switch (item.type) {
@@ -26,15 +26,21 @@ const getContent = (item, navigate) => {
                 </Button>
             )
 
+        case MENU_ITEM_TYPE.ICON_BUTTON:
+            return <IconButton>{item.title}</IconButton>
+
         default:
             return null
     }
 }
 
-export const Header = ({ menu = [], headerChildren = null }) => {
+export const Header = (props) => {
+    const { menu = [], headerChildren = null, hasSideBar, toggleSidebar } = props
     const [open, setOpen] = useState(false)
 
     const smallDevices = useMediaQuery((theme) => theme.breakpoints.down('sm'))
+
+    const tabDevices = useMediaQuery((theme) => theme.breakpoints.down('md'))
 
     const navigate = useNavigate()
     const { pathname } = useLocation()
@@ -49,12 +55,13 @@ export const Header = ({ menu = [], headerChildren = null }) => {
     }
 
     return (
-        <AppBar
-            position="fixed"
-            sx={{ backgroundColor: 'white.main', padding: { xs: '20px 12px', md: '20px 28.5px' } }}
-        >
-            <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center', p: 0 }}>
-                <DesktopLogo src={desktopImgSrc} alt="desktop-logo" onClick={() => navigate(HOME_URL)} />
+        <MuiAppBar position="fixed">
+            <StyledToolbar>
+                <DesktopLogo
+                    src={desktopImgSrc}
+                    alt="desktop-logo"
+                    onClick={() => navigate(localStorage.getItem('token') ? DISCOVER_URL : HOME_URL)}
+                />
 
                 {headerChildren
                     ? headerChildren
@@ -62,53 +69,57 @@ export const Header = ({ menu = [], headerChildren = null }) => {
                           <Box
                               key={index}
                               sx={{
-                                  display: { xs: 'none', md: 'flex' },
+                                  display: { xs: hasSideBar ? 'flex' : 'none', md: 'flex' },
                                   flexDirection: 'row',
-                                  gap: 10,
+                                  gap: hasSideBar ? 5 : 10,
+                                  alignItems: 'center',
                               }}
                           >
                               {group.map((item) => (
-                                  <Fragment key={item.title}>{getContent(item, navigate)}</Fragment>
+                                  <Fragment key={item.id}>{getContent(item, navigate)}</Fragment>
                               ))}
                           </Box>
                       ))}
-                {!headerChildren && menu.length !== 0 && (
+                {!headerChildren && tabDevices && (
                     <Fragment>
-                        <IconButton sx={{ display: { xs: 'block', md: 'none' } }} onClick={toggleDrawer}>
+                        <IconButton
+                            onClick={() => {
+                                toggleDrawer()
+                                toggleSidebar()
+                            }}
+                        >
                             <BarsIcon height={40} width={40} />
                         </IconButton>
                         <Drawer
-                            open={open}
+                            open={open && menu.length !== 0 && !hasSideBar}
                             onClose={toggleDrawer}
                             elevation={0}
-                            sx={{ display: { xs: 'block', md: 'none' } }}
+                            sx={{
+                                [`& .MuiDrawer-paper`]: {
+                                    mt: 8,
+                                },
+                            }}
                         >
                             <Box p={10}>
                                 {menu.map(({ group }, index) => (
-                                    <Box
-                                        key={index}
-                                        sx={{
-                                            display: { xs: 'flex', md: 'none' },
-                                            flexDirection: 'column',
-                                            gap: 5,
-                                            mb: 5,
-                                        }}
-                                    >
+                                    <MobileContentWrapper key={index}>
                                         {group.map((item) => (
                                             <Fragment key={item.title}>{getContent(item, navigate)}</Fragment>
                                         ))}
-                                    </Box>
+                                    </MobileContentWrapper>
                                 ))}
                             </Box>
                         </Drawer>
                     </Fragment>
                 )}
-            </Toolbar>
-        </AppBar>
+            </StyledToolbar>
+        </MuiAppBar>
     )
 }
 
 Header.propTypes = {
     menu: PropTypes.array,
     headerChildren: PropTypes.node,
+    hasSideBar: PropTypes.bool,
+    toggleSidebar: PropTypes.func,
 }
