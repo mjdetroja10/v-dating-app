@@ -1,6 +1,5 @@
 import { HomeIcon } from 'Application/Molecules/Icons/HomeIcon'
 import { NotificationIcon } from 'Application/Molecules/Icons/NotificationIcon'
-import { jwtDecode } from 'jwt-decode'
 
 import {
     CONTACT_US_URL,
@@ -15,6 +14,7 @@ export const MENU_ITEM_TYPE = {
     LINK: 'LINK',
     BUTTON: 'BUTTON',
     ICON_BUTTON: 'ICON_BUTTON',
+    IMAGE: 'IMAGE',
 }
 
 export const commonHeaderMenu = [
@@ -56,11 +56,6 @@ export const homeHeaderMenu = commonHeaderMenu.concat({
     ],
 })
 
-const getProfileSrc = () => {
-    if (!localStorage.getItem('token')) return null
-    return jwtDecode(localStorage.getItem('token'))?.images[0]?.src
-}
-
 export const userHeaderMenu = [
     {
         group: [
@@ -72,15 +67,10 @@ export const userHeaderMenu = [
             },
             {
                 id: 6,
-                title: (
-                    <img
-                        src={getProfileSrc()}
-                        alt="user profile"
-                        style={{ width: 50, height: 50, borderRadius: '100%', objectFit: 'cover' }}
-                    />
-                ),
+                title: '',
+                getImageSrc: (user) => (user ? user?.images[0].src : ''),
                 path: MY_PROFILE_URL,
-                type: MENU_ITEM_TYPE.LINK,
+                type: MENU_ITEM_TYPE.IMAGE,
             },
         ],
     },

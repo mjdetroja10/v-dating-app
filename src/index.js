@@ -1,3 +1,4 @@
+import { UserContextProvider } from 'Application/Contexts/UserContext'
 import { theme } from 'Application/Theme'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
@@ -14,11 +15,13 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
     <React.StrictMode>
-        <ThemeProvider theme={theme}>
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
-        </ThemeProvider>
+        <UserContextProvider>
+            <ThemeProvider theme={theme}>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </ThemeProvider>
+        </UserContextProvider>
     </React.StrictMode>
 )
 

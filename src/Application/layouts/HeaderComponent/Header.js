@@ -1,5 +1,6 @@
 import { MENU_ITEM_TYPE } from 'Application/Constants/HeaderConstant'
 import { DISCOVER_URL, HOME_URL, LOGIN_URL } from 'Application/Constants/RouteConstant'
+import { useUserDetails } from 'Application/Hooks/useUserDetails'
 import { Button } from 'Application/Molecules/Atoms/Button/Button'
 import { BarsIcon } from 'Application/Molecules/Icons/BarsIcon'
 import PropTypes from 'prop-types'
@@ -10,14 +11,10 @@ import { Box, Drawer, IconButton, useMediaQuery } from '@mui/material'
 
 import { DesktopLogo, MobileContentWrapper, MuiAppBar, NavLink, StyledToolbar } from './Header.styled'
 
-const getContent = (item, navigate) => {
+const getContent = (item, navigate, user) => {
     switch (item.type) {
         case MENU_ITEM_TYPE.LINK:
-            return (
-                <NavLink sx={{}} to={item.path}>
-                    {item.title}
-                </NavLink>
-            )
+            return <NavLink to={item.path}>{item.title}</NavLink>
 
         case MENU_ITEM_TYPE.BUTTON:
             return (
@@ -29,6 +26,19 @@ const getContent = (item, navigate) => {
         case MENU_ITEM_TYPE.ICON_BUTTON:
             return <IconButton>{item.title}</IconButton>
 
+        case MENU_ITEM_TYPE.IMAGE:
+            return (
+                item.getImageSrc(user) && (
+                    <NavLink to={item.path}>
+                        <img
+                            src={item.getImageSrc(user)}
+                            alt="user profile"
+                            style={{ width: 50, height: 50, borderRadius: '100%', objectFit: 'cover' }}
+                        />
+                    </NavLink>
+                )
+            )
+
         default:
             return null
     }
@@ -37,6 +47,8 @@ const getContent = (item, navigate) => {
 export const Header = (props) => {
     const { menu = [], headerChildren = null, hasSideBar, toggleSidebar } = props
     const [open, setOpen] = useState(false)
+
+    const { user } = useUserDetails()
 
     const smallDevices = useMediaQuery((theme) => theme.breakpoints.down('sm'))
 
@@ -76,7 +88,7 @@ export const Header = (props) => {
                               }}
                           >
                               {group.map((item) => (
-                                  <Fragment key={item.id}>{getContent(item, navigate)}</Fragment>
+                                  <Fragment key={item.id}>{getContent(item, navigate, user)}</Fragment>
                               ))}
                           </Box>
                       ))}
@@ -104,7 +116,7 @@ export const Header = (props) => {
                                 {menu.map(({ group }, index) => (
                                     <MobileContentWrapper key={index}>
                                         {group.map((item) => (
-                                            <Fragment key={item.title}>{getContent(item, navigate)}</Fragment>
+                                            <Fragment key={item.title}>{getContent(item, navigate, user)}</Fragment>
                                         ))}
                                     </MobileContentWrapper>
                                 ))}
