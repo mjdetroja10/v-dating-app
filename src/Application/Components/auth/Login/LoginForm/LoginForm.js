@@ -1,6 +1,6 @@
 import { DISCOVER_URL, FORGOT_PASSWORD_URL } from 'Application/Constants/RouteConstant'
+import { useAuth } from 'Application/Hooks/useAuth'
 import { useFormSubmit } from 'Application/Hooks/useFormSubmit'
-import { useUserDetails } from 'Application/Hooks/useUserDetails'
 import { AlertComponent } from 'Application/Molecules/Atoms/AlertComponent/AlertComponent'
 import { CheckboxController } from 'Infrasctructure/FormControllers/CheckboxController'
 import { StyledLabel } from 'Infrasctructure/FormControllers/index.styled'
@@ -15,10 +15,10 @@ import { Box, Stack, Typography } from '@mui/material'
 
 import { LoginButton, LoginFormWrapper } from '../Login.styled'
 
-const onSuccess = (navigate, updateUser) => (data) => {
+const onSuccess = (navigate, login) => (data) => {
     if (data.token) {
         localStorage.setItem('token', data.token)
-        updateUser(data.token)
+        login(data.token)
         navigate(DISCOVER_URL)
     }
 }
@@ -37,7 +37,7 @@ const onError = (setError, setErrorMessage) => (error) => {
 export const LoginForm = () => {
     const methods = useForm({ defaultValues: { email: '', password: '' } })
 
-    const { updateUser } = useUserDetails()
+    const { login } = useAuth()
 
     const [errorMessage, setErrorMessage] = useState('')
 
@@ -47,7 +47,7 @@ export const LoginForm = () => {
 
     const [formSubmit, loading] = useFormSubmit({
         request: LoginRequest,
-        onSuccess: onSuccess(navigate, updateUser),
+        onSuccess: onSuccess(navigate, login),
         onError: onError(setError, setErrorMessage),
     })
 

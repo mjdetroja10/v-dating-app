@@ -1,6 +1,6 @@
 import { MENU_ITEM_TYPE } from 'Application/Constants/HeaderConstant'
 import { DISCOVER_URL, HOME_URL, LOGIN_URL } from 'Application/Constants/RouteConstant'
-import { useUserDetails } from 'Application/Hooks/useUserDetails'
+import { useAuth } from 'Application/Hooks/useAuth'
 import { Button } from 'Application/Molecules/Atoms/Button/Button'
 import { BarsIcon } from 'Application/Molecules/Icons/BarsIcon'
 import PropTypes from 'prop-types'
@@ -48,7 +48,7 @@ export const Header = (props) => {
     const { menu = [], headerChildren = null, hasSideBar, toggleSidebar } = props
     const [open, setOpen] = useState(false)
 
-    const { user } = useUserDetails()
+    const { userDetails } = useAuth()
 
     const smallDevices = useMediaQuery((theme) => theme.breakpoints.down('sm'))
 
@@ -65,6 +65,8 @@ export const Header = (props) => {
     const toggleDrawer = () => {
         setOpen(!open)
     }
+
+    console.log(userDetails, 'userDetails')
 
     return (
         <MuiAppBar position="fixed">
@@ -88,7 +90,7 @@ export const Header = (props) => {
                               }}
                           >
                               {group.map((item) => (
-                                  <Fragment key={item.id}>{getContent(item, navigate, user)}</Fragment>
+                                  <Fragment key={item.id}>{getContent(item, navigate, userDetails)}</Fragment>
                               ))}
                           </Box>
                       ))}
@@ -116,7 +118,9 @@ export const Header = (props) => {
                                 {menu.map(({ group }, index) => (
                                     <MobileContentWrapper key={index}>
                                         {group.map((item) => (
-                                            <Fragment key={item.title}>{getContent(item, navigate, user)}</Fragment>
+                                            <Fragment key={item.title}>
+                                                {getContent(item, navigate, userDetails)}
+                                            </Fragment>
                                         ))}
                                     </MobileContentWrapper>
                                 ))}

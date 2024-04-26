@@ -24,8 +24,6 @@ import {
     SIGNUP_URL,
     VALADATIONS_URL,
 } from 'Application/Constants/RouteConstant'
-import { AuthLayout } from 'Application/layouts/AuthLayout/AuthLayout'
-import { UnAuthLayout } from 'Application/layouts/AuthLayout/UnAuthLayout'
 import { Route, Routes } from 'react-router-dom'
 
 export const App = () => {
@@ -39,20 +37,16 @@ export const App = () => {
             {/*  public routes */}
 
             {/* un protected routes */}
-            <Route element={<UnAuthLayout />}>
-                <Route path={SIGNUP_URL} element={<SignUp />} />
-                <Route path={LOGIN_URL} element={<Login />} />
-            </Route>
+            <Route path={SIGNUP_URL} element={<SignUp />} />
+            <Route path={LOGIN_URL} element={<Login />} />
             {/* un protected routes */}
 
             {/* protected routes */}
-            <Route element={<AuthLayout />}>
-                <Route path={DISCOVER_URL} element={<DiscoverComponent />} />
-                <Route path={MY_CONNECTION_URL} element={<MyConnections />} />
-                <Route path={MY_PROFILE_URL} element={<MyProfile />} />
-                <Route path={VALADATIONS_URL} element={<Valadations />} />
-                <Route path={COMMON_THREADS_URL} element={<CommonThreads />} />
-            </Route>
+            <Route path={DISCOVER_URL} element={<DiscoverComponent />} />
+            <Route path={MY_CONNECTION_URL} element={<MyConnections />} />
+            <Route path={MY_PROFILE_URL} element={<MyProfile />} />
+            <Route path={VALADATIONS_URL} element={<Valadations />} />
+            <Route path={COMMON_THREADS_URL} element={<CommonThreads />} />
             {/* protected routes */}
 
             <Route path="*" element={'not found'} />

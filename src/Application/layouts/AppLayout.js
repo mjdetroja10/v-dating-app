@@ -23,7 +23,7 @@ export const AppLayout = (props) => {
             {hasSideBar ? (
                 <Fragment>
                     <SidebarComponent menu={sidebarMenu} open={sidebarOpen} toggleSidebar={toggleSidebar} />
-                    <Box component="main" sx={{ flexGrow: 1, p: 6.5 }}>
+                    <Box component="main" sx={{ flexGrow: 1, padding: (theme) => theme.spacing(6.5, 4, 0) }}>
                         <Toolbar />
                         {children}
                     </Box>

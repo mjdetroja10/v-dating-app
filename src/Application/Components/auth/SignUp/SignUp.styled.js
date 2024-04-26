@@ -7,8 +7,6 @@ export const Wrapper = styled(Box)(({ theme }) => ({
     backgroundColor: theme.palette.secondary.main,
     minHeight: 'calc(100vh - 190px)',
     padding: theme.spacing(16.25, 0, 7.5),
-    [theme.breakpoints.down('md')]: {},
-    [theme.breakpoints.up('md')]: {},
 }))
 
 export const StyledButton = styled(Button)(({ theme }) => ({

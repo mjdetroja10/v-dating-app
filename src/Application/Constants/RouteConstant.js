@@ -16,3 +16,7 @@ export const COMMON_THREADS_URL = '/common-threads'
 export const MY_CONNECTION_URL = '/my-connections'
 export const MY_PROFILE_URL = '/my-profile'
 export const VALADATIONS_URL = '/valadations'
+
+export const PROTECTED_ROUTES = [DISCOVER_URL, COMMON_THREADS_URL, MY_CONNECTION_URL, MY_PROFILE_URL, VALADATIONS_URL]
+
+export const UNPROTECTED_ROUTES = [SIGNUP_URL, LOGIN_URL]
