@@ -2,7 +2,7 @@ import { responseStatus } from 'Infrasctructure/store/StoreUtility'
 import { useState } from 'react'
 
 export const useFetchData = ({ request, onSuccess, onError }) => {
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     async function fetchData(params) {
         setLoading(true)
