@@ -1,5 +1,9 @@
+import { STATUS } from 'Application/Constants/DiscoverConstant'
+import { useAuth } from 'Application/Hooks/useAuth'
 import { useFetchData } from 'Application/Hooks/useFetchData'
+import { useFormSubmit } from 'Application/Hooks/useFormSubmit'
 import { ExpandMoreIcon } from 'Application/Molecules/Icons/ExpandMoreIcon'
+import { AcceptRejectRequest } from 'Infrasctructure/store/requests/AcceptRejectRequest'
 import { GetPendingRequestList } from 'Infrasctructure/store/requests/GetPendingRequestList'
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
@@ -8,21 +12,43 @@ import { Accordion, AccordionActions, Alert, Box, Button, CircularProgress, Typo
 
 import { AccordionContent } from '../Valadations.styled'
 
-export const PenidngRequestList = () => {
+const valadationActionButtons = [
+    { title: 'Accept', color: 'success', status: STATUS.accept },
+    { title: 'Reject', color: 'error', status: STATUS.rejected },
+]
+
+const handleSuccess = (setPendingRequestList, setReloadMyFriends) => (data) => {
+    if (data) {
+        setPendingRequestList((prev) => prev.filter((user) => user?._id !== data))
+        setReloadMyFriends(true)
+    }
+}
+
+const handleError = (setError) => (error) => {
+    let errMsg = error && Array.isArray(error) ? 'something went wrong' : error
+    setError(errMsg)
+}
+
+export const PenidngRequestList = ({ setReloadMyFriends }) => {
     const [pendingRequestList, setPendingRequestList] = useState([])
     const [error, setError] = useState('')
 
-    const [getPendingRequests, loading] = useFetchData({
+    const { userDetails } = useAuth()
+
+    const [pendingRequests, loading] = useFetchData({
         request: GetPendingRequestList,
         onSuccess: (data) => setPendingRequestList(data),
-        onError: (error) => {
-            let errMsg = error && Array.isArray(error) ? 'something went wrong' : error
-            setError(errMsg)
-        },
+        onError: handleError(setError),
+    })
+
+    const [friendRequest, requestLoading] = useFormSubmit({
+        request: AcceptRejectRequest,
+        onSuccess: handleSuccess(setPendingRequestList, setReloadMyFriends),
+        onError: handleError(setError),
     })
 
     useEffect(() => {
-        getPendingRequests()
+        pendingRequests()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -48,12 +74,23 @@ export const PenidngRequestList = () => {
                             </AccordionContent>
 
                             <AccordionActions sx={{ justifyContent: 'start' }}>
-                                <Button color="success" variant="contained">
-                                    Accept
-                                </Button>
-                                <Button color="error" variant="contained">
-                                    Reject
-                                </Button>
+                                {valadationActionButtons.map(({ title, color, status }) => (
+                                    <Button
+                                        color={color}
+                                        variant="contained"
+                                        key={title}
+                                        onClick={() => {
+                                            friendRequest({
+                                                senderId: userDetails?.id,
+                                                recieverId: user?._id,
+                                                status: status,
+                                            })
+                                        }}
+                                        loading={requestLoading}
+                                    >
+                                        {title}
+                                    </Button>
+                                ))}
                             </AccordionActions>
                         </Accordion>
                     ))
@@ -74,6 +111,5 @@ export const PenidngRequestList = () => {
 }
 
 PenidngRequestList.propTypes = {
-    pendingRequestList: PropTypes.array,
-    loading: PropTypes.bool,
+    setReloadMyFriends: PropTypes.func,
 }

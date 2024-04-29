@@ -1,5 +1,6 @@
 import { useFetchData } from 'Application/Hooks/useFetchData'
 import { MyFriendsRequest } from 'Infrasctructure/store/requests/MyFriendsRequest'
+import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
 
 import {
@@ -15,7 +16,7 @@ import {
     Typography,
 } from '@mui/material'
 
-export const MyFriends = () => {
+export const MyFriends = ({ reloadMyFriends, setReloadMyFriends }) => {
     const [myFriendsList, setMyFriendsList] = useState([])
 
     const [error, setError] = useState('')
@@ -33,6 +34,14 @@ export const MyFriends = () => {
         fetchRequest()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    useEffect(() => {
+        if (reloadMyFriends) {
+            setReloadMyFriends(false)
+            fetchRequest()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [reloadMyFriends])
 
     return (
         <Box>
@@ -78,4 +87,9 @@ export const MyFriends = () => {
             </Box>
         </Box>
     )
+}
+
+MyFriends.propTypes = {
+    reloadMyFriends: PropTypes.bool,
+    setReloadMyFriends: PropTypes.func,
 }

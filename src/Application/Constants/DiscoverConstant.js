@@ -3,7 +3,7 @@ import { DisLikeIcon } from 'Application/Molecules/Icons/DisLikeIcon'
 import { LikeIcon } from 'Application/Molecules/Icons/LikeIcon'
 import { LocationIcon } from 'Application/Molecules/Icons/LocationIcon'
 
-const STATUS = { pending: 'pending', accept: 'accept', rejected: 'rejected', ignore: 'ignore' }
+export const STATUS = { pending: 'pending', accept: 'accept', rejected: 'rejected', ignore: 'ignore' }
 
 export const userDetailList = (profile) => [
     {

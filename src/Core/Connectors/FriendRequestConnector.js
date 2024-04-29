@@ -10,4 +10,8 @@ export class FriendRequestConnector {
     static async pendingRequestList() {
         return await fetchWrapper.get(`${baseUrl}/auth/pending-request`, {})
     }
+
+    static async accecptRejectRequest(body) {
+        return await fetchWrapper.post(`${baseUrl}/auth/friend-requests`, { body })
+    }
 }
