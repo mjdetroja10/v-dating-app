@@ -4,6 +4,7 @@ import { AppLayout } from 'Application/layouts/AppLayout'
 
 import { Box, Grid } from '@mui/material'
 
+import { MyFriends } from './MyFriends/MyFriends'
 import { PenidngRequestList } from './PenidngRequestList/PenidngRequestList'
 
 export const Valadations = () => {
@@ -14,7 +15,9 @@ export const Valadations = () => {
                     <Grid item xs={12}>
                         <PenidngRequestList />
                     </Grid>
-                    <Grid item xs={12}></Grid>
+                    <Grid item xs={12}>
+                        <MyFriends />
+                    </Grid>
                 </Grid>
             </Box>
         </AppLayout>

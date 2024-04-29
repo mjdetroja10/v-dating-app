@@ -62,7 +62,7 @@ export const PenidngRequestList = () => {
                         {loading ? (
                             <CircularProgress />
                         ) : (
-                            <Typography variant="h5" color="primary.main" fontWeight={500} mb={2.5}>
+                            <Typography variant="h5" fontWeight={500} mb={2.5}>
                                 No Request Available
                             </Typography>
                         )}
