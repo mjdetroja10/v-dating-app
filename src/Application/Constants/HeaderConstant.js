@@ -19,6 +19,7 @@ export const MENU_ITEM_TYPE = {
 
 export const commonHeaderMenu = [
     {
+        className: '',
         group: [
             {
                 id: 1,
@@ -43,6 +44,7 @@ export const commonHeaderMenu = [
 ]
 
 export const homeHeaderMenu = commonHeaderMenu.concat({
+    className: '',
     group: [
         {
             id: 4,
@@ -58,6 +60,7 @@ export const homeHeaderMenu = commonHeaderMenu.concat({
 
 export const userHeaderMenu = [
     {
+        className: 'sidebar-header-content',
         group: [
             {
                 id: 5,
@@ -78,6 +81,7 @@ export const userHeaderMenu = [
 
 export const profileHeaderMenu = [
     {
+        className: 'sidebar-header-content',
         group: [
             {
                 id: 7,

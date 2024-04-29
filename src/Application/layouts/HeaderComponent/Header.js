@@ -7,9 +7,9 @@ import PropTypes from 'prop-types'
 import { Fragment, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import { Avatar, Box, Drawer, IconButton, useMediaQuery } from '@mui/material'
+import { Avatar, Box, Drawer, IconButton, Toolbar, useMediaQuery } from '@mui/material'
 
-import { DesktopLogo, MobileContentWrapper, MuiAppBar, NavLink, StyledToolbar } from './Header.styled'
+import { DesktopContent, MobileContentWrapper, MuiAppBar, NavLink } from './Header.styled'
 
 const getContent = (item, navigate, user) => {
     switch (item.type) {
@@ -68,29 +68,22 @@ export const Header = (props) => {
 
     return (
         <MuiAppBar position="fixed">
-            <StyledToolbar>
-                <DesktopLogo
+            <Toolbar>
+                <img
                     src={desktopImgSrc}
+                    className="logo"
                     alt="desktop-logo"
                     onClick={() => navigate(localStorage.getItem('token') ? DISCOVER_URL : HOME_URL)}
                 />
 
                 {headerChildren
                     ? headerChildren
-                    : menu.map(({ group }, index) => (
-                          <Box
-                              key={index}
-                              sx={{
-                                  display: { xs: hasSideBar ? 'flex' : 'none', md: 'flex' },
-                                  flexDirection: 'row',
-                                  gap: hasSideBar ? 5 : 10,
-                                  alignItems: 'center',
-                              }}
-                          >
+                    : menu.map(({ group, className }, index) => (
+                          <DesktopContent key={index} className={className}>
                               {group.map((item) => (
                                   <Fragment key={item.id}>{getContent(item, navigate, userDetails)}</Fragment>
                               ))}
-                          </Box>
+                          </DesktopContent>
                       ))}
                 {!headerChildren && tabDevices && (
                     <Fragment>
@@ -126,7 +119,7 @@ export const Header = (props) => {
                         </Drawer>
                     </Fragment>
                 )}
-            </StyledToolbar>
+            </Toolbar>
         </MuiAppBar>
     )
 }
