@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 import { Fragment, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import { Box, Drawer, IconButton, useMediaQuery } from '@mui/material'
+import { Avatar, Box, Drawer, IconButton, useMediaQuery } from '@mui/material'
 
 import { DesktopLogo, MobileContentWrapper, MuiAppBar, NavLink, StyledToolbar } from './Header.styled'
 
@@ -30,10 +30,10 @@ const getContent = (item, navigate, user) => {
             return (
                 item.getImageSrc(user) && (
                     <NavLink to={item.path}>
-                        <img
+                        <Avatar
                             src={item.getImageSrc(user)}
-                            alt="user profile"
-                            style={{ width: 50, height: 50, borderRadius: '100%', objectFit: 'cover' }}
+                            alt={'user profile'}
+                            sx={{ '& img': { objectPosition: 'center top' } }}
                         />
                     </NavLink>
                 )
