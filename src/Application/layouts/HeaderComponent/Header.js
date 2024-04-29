@@ -66,8 +66,6 @@ export const Header = (props) => {
         setOpen(!open)
     }
 
-    console.log(userDetails, 'userDetails')
-
     return (
         <MuiAppBar position="fixed">
             <StyledToolbar>

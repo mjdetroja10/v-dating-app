@@ -20,6 +20,7 @@ export const theme = createTheme({
         black: {
             main: '#72859A',
             light: '#B5D4F6',
+            medium: ' #0C0E10',
             dark: '#2E353E',
         },
     },
@@ -74,11 +75,17 @@ export const theme = createTheme({
             lineHeight: 'auto',
         },
         body3: {
-            fontSize: '10px',
+            fontSize: '12px',
             lineHeight: 'auto',
         },
     },
-    shadows: ['4px 4px 8px rgba(0, 0, 0, 0.15)', '0px 1px 8px rgba(0, 0, 0, 0.05)', 'none', 'none', 'none'],
+    shadows: [
+        '4px 4px 8px rgba(0, 0, 0, 0.15)',
+        '0px 1px 8px rgba(0, 0, 0, 0.05)',
+        '0px 0px 8px 0px #00000040',
+        'none',
+        'none',
+    ],
 
     breakPoints: {
         xs: 0,
