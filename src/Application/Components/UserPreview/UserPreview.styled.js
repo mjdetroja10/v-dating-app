@@ -1,3 +1,5 @@
+import { Button } from 'Application/Molecules/Atoms/Button/Button'
+
 import styled from '@emotion/styled'
 import { Box } from '@mui/material'
 
@@ -46,4 +48,13 @@ export const ActionWrapper = styled(Box)(({ theme }) => ({
     justifyContent: 'space-around',
     padding: theme.spacing(1),
     boxShadow: '0px -1px 4px 0px #0C0E1026',
+}))
+
+export const ActionButton = styled(Button)(({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textTransform: 'capitalize',
+    '&:hover': { background: 'none', color: theme.palette.primary.main },
 }))

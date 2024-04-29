@@ -3,6 +3,8 @@ import { DisLikeIcon } from 'Application/Molecules/Icons/DisLikeIcon'
 import { LikeIcon } from 'Application/Molecules/Icons/LikeIcon'
 import { LocationIcon } from 'Application/Molecules/Icons/LocationIcon'
 
+const STATUS = { pending: 'pending', accept: 'accept', rejected: 'rejected', ignore: 'ignore' }
+
 export const userDetailList = (profile) => [
     {
         title: `${profile?.city}, ${profile?.state}`,
@@ -19,6 +21,6 @@ export const userDetailList = (profile) => [
 ]
 
 export const actionList = [
-    { title: 'Interested', icon: <LikeIcon height={48} width={48} /> },
-    { title: 'Not Interested', icon: <DisLikeIcon height={48} width={48} /> },
+    { title: 'Interested', icon: <LikeIcon height={48} width={48} />, status: STATUS.pending },
+    { title: 'Not Interested', icon: <DisLikeIcon height={48} width={48} />, status: STATUS.ignore },
 ]

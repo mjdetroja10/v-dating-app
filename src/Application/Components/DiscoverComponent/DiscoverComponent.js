@@ -2,6 +2,7 @@ import { userHeaderMenu } from 'Application/Constants/HeaderConstant'
 import { SIDEBAR_MENU } from 'Application/Constants/SidebarConstant'
 import { useFetchData } from 'Application/Hooks/useFetchData'
 import { AppLayout } from 'Application/layouts/AppLayout'
+import { AlertComponent } from 'Application/Molecules/Atoms/AlertComponent/AlertComponent'
 import { GetDiscoverListRequest } from 'Infrasctructure/store/requests/GetDiscoverListRequest'
 import { useEffect, useRef, useState } from 'react'
 import { Pagination } from 'swiper/modules'
@@ -47,6 +48,7 @@ export const DiscoverComponent = () => {
     const [active, setActive] = useState(false)
     const [discoverList, setDiscoverList] = useState([])
     const [activeProfile, setActiveProfile] = useState('')
+    const [response, setResponse] = useState({ success: '', error: '' })
 
     const listInnerRef = useRef()
 
@@ -65,6 +67,13 @@ export const DiscoverComponent = () => {
 
     return (
         <AppLayout headerMenu={userHeaderMenu} sidebarMenu={SIDEBAR_MENU} hasSideBar={true}>
+            {(response?.error || response?.success) && (
+                <AlertComponent
+                    type={response?.error ? 'error' : response?.success ? 'success' : ''}
+                    message={response?.error || response?.success}
+                    onClose={() => setResponse({ success: '', error: '' })}
+                />
+            )}
             <Grid container spacing={2.5}>
                 <Grid item xs={12} lg={activeProfile ? 6 : 12}>
                     {tabDevices ? (
@@ -110,7 +119,12 @@ export const DiscoverComponent = () => {
                 )}
                 {activeProfile && (
                     <Grid item xs={12} lg={6}>
-                        <UserPreview profile={activeProfile} setActiveProfile={setActiveProfile} />
+                        <UserPreview
+                            profile={activeProfile}
+                            setActiveProfile={setActiveProfile}
+                            setDiscoverList={setDiscoverList}
+                            setResponse={setResponse}
+                        />
                     </Grid>
                 )}
             </Grid>

@@ -1,15 +1,39 @@
 import { actionList, userDetailList } from 'Application/Constants/DiscoverConstant'
 import { useAuth } from 'Application/Hooks/useAuth'
+import { useFormSubmit } from 'Application/Hooks/useFormSubmit'
 import { ProgressBar } from 'Application/Molecules/Atoms/ProgressBar/ProgressBar'
 import { matchInterestValue } from 'Application/Utils/GeneralUtils'
+import { SendFriendRequest } from 'Infrasctructure/store/requests/SendFriendRequest'
 import PropTypes from 'prop-types'
 
 import { Box, Grid, Stack, Typography } from '@mui/material'
 
-import { ActionWrapper, Wrapper, InterestBox, YellowBox } from './UserPreview.styled'
+import { ActionWrapper, Wrapper, InterestBox, YellowBox, ActionButton } from './UserPreview.styled'
 
-export const UserPreview = ({ profile, setActiveProfile }) => {
+const handleSuccess = (profile, setDiscoverList, setResponse, setActiveProfile) => (data) => {
+    if (data) {
+        setResponse((prev) => ({ ...prev, error: '', success: data?.message || 'request sent successfully' }))
+        setDiscoverList((list) => list.filter((user) => user._id !== profile._id))
+        setActiveProfile(null)
+    }
+}
+
+const handleError = (setResponse) => (error) => {
+    if (error && Array.isArray(error)) {
+        setResponse((prev) => ({ ...prev, error: 'Something went wrong', success: '' }))
+        return
+    }
+    setResponse((prev) => ({ ...prev, error, success: '' }))
+}
+
+export const UserPreview = ({ profile, setActiveProfile, setDiscoverList, setResponse }) => {
     const { userDetails } = useAuth()
+
+    const [sendRequest, loading] = useFormSubmit({
+        request: SendFriendRequest,
+        onSuccess: handleSuccess(profile, setDiscoverList, setResponse, setActiveProfile),
+        onError: handleError(setResponse),
+    })
 
     return (
         <Box sx={{ position: 'fixed' }}>
@@ -80,19 +104,24 @@ export const UserPreview = ({ profile, setActiveProfile }) => {
                 </Grid>
             </Wrapper>
             <ActionWrapper>
-                {actionList.map(({ title, icon }) => (
-                    <Stack
-                        justifyContent="center"
-                        alignItems="center"
+                {actionList.map(({ title, icon, status }) => (
+                    <ActionButton
+                        variant="text"
                         key={title}
-                        sx={{ cursor: 'pointer' }}
-                        onClick={() => setActiveProfile('')}
+                        onClick={() => {
+                            sendRequest({
+                                senderId: userDetails.id,
+                                recieverId: profile._id,
+                                status,
+                            })
+                        }}
+                        loading={loading}
                     >
                         {icon}
                         <Typography variant="body3" fontWeight={300}>
                             {title}
                         </Typography>
-                    </Stack>
+                    </ActionButton>
                 ))}
             </ActionWrapper>
         </Box>
@@ -102,4 +131,6 @@ export const UserPreview = ({ profile, setActiveProfile }) => {
 UserPreview.propTypes = {
     profile: PropTypes.object,
     setActiveProfile: PropTypes.func,
+    setDiscoverList: PropTypes.func,
+    setResponse: PropTypes.func,
 }
