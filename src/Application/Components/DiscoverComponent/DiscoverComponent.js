@@ -67,67 +67,75 @@ export const DiscoverComponent = () => {
 
     return (
         <AppLayout headerMenu={userHeaderMenu} sidebarMenu={SIDEBAR_MENU} hasSideBar={true}>
-            {(response?.error || response?.success) && (
-                <AlertComponent
-                    type={response?.error ? 'error' : response?.success ? 'success' : ''}
-                    message={response?.error || response?.success}
-                    onClose={() => setResponse({ success: '', error: '' })}
-                />
-            )}
-            <Grid container spacing={2.5}>
-                <Grid item xs={12} lg={activeProfile ? 6 : 12}>
-                    {tabDevices ? (
-                        !activeProfile && (
-                            <Wrapper>
-                                <StyledSwiper
-                                    className="mySwiper"
-                                    onSlideChange={onSlideChange(page, setPage)}
-                                    direction={'vertical'}
-                                    pagination={{
-                                        clickable: true,
-                                    }}
-                                    grabCursor={true}
-                                    modules={[Pagination]}
-                                >
-                                    {discoverList.map((user) => (
-                                        <SwiperSlide key={user._id}>
-                                            <UserProfileCard user={user} setActiveProfile={setActiveProfile} />
-                                        </SwiperSlide>
-                                    ))}
-                                </StyledSwiper>
+            <Box sx={{ position: { xs: 'relative', md: 'initial' } }}>
+                {(response?.error || response?.success) && (
+                    <AlertComponent
+                        type={response?.error ? 'error' : response?.success ? 'success' : ''}
+                        message={response?.error || response?.success}
+                        onClose={() => setResponse({ success: '', error: '' })}
+                    />
+                )}
+                <Grid container spacing={2.5}>
+                    <Grid item xs={12} md={activeProfile ? 6 : 12} lg={activeProfile ? 6 : 12}>
+                        {tabDevices ? (
+                            !activeProfile && (
+                                <Wrapper>
+                                    <StyledSwiper
+                                        className="mySwiper"
+                                        onSlideChange={onSlideChange(page, setPage)}
+                                        direction={'vertical'}
+                                        pagination={{
+                                            clickable: true,
+                                        }}
+                                        grabCursor={true}
+                                        modules={[Pagination]}
+                                    >
+                                        {discoverList.map((user) => (
+                                            <SwiperSlide key={user._id}>
+                                                <UserProfileCard user={user} setActiveProfile={setActiveProfile} />
+                                            </SwiperSlide>
+                                        ))}
+                                    </StyledSwiper>
+                                </Wrapper>
+                            )
+                        ) : (
+                            <Wrapper ref={listInnerRef} onScroll={onScroll(listInnerRef, setPage)}>
+                                <Grid container spacing={2.5}>
+                                    {discoverList.length > 0 &&
+                                        discoverList.map((user) => (
+                                            <Grid
+                                                item
+                                                xs={12}
+                                                md={activeProfile ? 6 : 4}
+                                                lg={activeProfile ? 6 : 2}
+                                                key={user._id}
+                                            >
+                                                <UserProfileCard user={user} setActiveProfile={setActiveProfile} />
+                                            </Grid>
+                                        ))}
+                                </Grid>
                             </Wrapper>
-                        )
-                    ) : (
-                        <Wrapper ref={listInnerRef} onScroll={onScroll(listInnerRef, setPage)}>
-                            <Grid container spacing={2.5}>
-                                {discoverList.length > 0 &&
-                                    discoverList.map((user) => (
-                                        <Grid item xs={12} md={4} lg={activeProfile ? 6 : 2} key={user._id}>
-                                            <UserProfileCard user={user} setActiveProfile={setActiveProfile} />
-                                        </Grid>
-                                    ))}
-                            </Grid>
-                        </Wrapper>
+                        )}
+                    </Grid>
+                    {loading && (
+                        <Grid item xs={12}>
+                            <Box sx={{ textAlign: 'center' }}>
+                                <CircularProgress />
+                            </Box>
+                        </Grid>
+                    )}
+                    {activeProfile && (
+                        <Grid item xs={12} md={6} lg={6}>
+                            <UserPreview
+                                profile={activeProfile}
+                                setActiveProfile={setActiveProfile}
+                                setDiscoverList={setDiscoverList}
+                                setResponse={setResponse}
+                            />
+                        </Grid>
                     )}
                 </Grid>
-                {loading && (
-                    <Grid item xs={12}>
-                        <Box sx={{ textAlign: 'center' }}>
-                            <CircularProgress />
-                        </Box>
-                    </Grid>
-                )}
-                {activeProfile && (
-                    <Grid item xs={12} lg={6}>
-                        <UserPreview
-                            profile={activeProfile}
-                            setActiveProfile={setActiveProfile}
-                            setDiscoverList={setDiscoverList}
-                            setResponse={setResponse}
-                        />
-                    </Grid>
-                )}
-            </Grid>
+            </Box>
         </AppLayout>
     )
 }

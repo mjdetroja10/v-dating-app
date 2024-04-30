@@ -41,10 +41,17 @@ export const UserCard = styled(Box)(({ theme }) => ({
         width: '100%',
         height: 'calc(100vh - 208px)',
         cursor: 'grab',
+
+        '&:hover': {
+            '&:after': {
+                background: 'none',
+                opacity: 0,
+            },
+        },
     },
 }))
 
-export const ViewProfileWrapper = styled(Box)({
+export const ViewProfileWrapper = styled(Box)(({ theme }) => ({
     position: 'absolute',
     bottom: 0,
     width: '100%',
@@ -52,7 +59,21 @@ export const ViewProfileWrapper = styled(Box)({
     display: 'none',
     justifyContent: 'center',
     alignItems: 'center',
-})
+
+    [theme.breakpoints.down('md')]: {
+        justifyContent: 'end',
+        alignItems: 'baseline',
+        top: 0,
+        right: 0,
+        padding: theme.spacing(1.5),
+
+        '& svg': {
+            backgroundColor: theme.palette.white.main,
+            borderRadius: '100%',
+            padding: '4px',
+        },
+    },
+}))
 
 export const CardContent = styled(Box)(({ theme }) => ({
     display: 'flex',

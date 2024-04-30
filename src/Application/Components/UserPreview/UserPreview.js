@@ -5,10 +5,12 @@ import { ProgressBar } from 'Application/Molecules/Atoms/ProgressBar/ProgressBar
 import { matchInterestValue } from 'Application/Utils/GeneralUtils'
 import { SendFriendRequest } from 'Infrasctructure/store/requests/SendFriendRequest'
 import PropTypes from 'prop-types'
+import { Pagination } from 'swiper/modules'
+import { SwiperSlide } from 'swiper/react'
 
 import { Box, Grid, Stack, Typography } from '@mui/material'
 
-import { ActionWrapper, Wrapper, InterestBox, YellowBox, ActionButton } from './UserPreview.styled'
+import { ActionWrapper, Wrapper, InterestBox, YellowBox, ActionButton, Slider } from './UserPreview.styled'
 
 const handleSuccess = (profile, setDiscoverList, setResponse, setActiveProfile) => (data) => {
     if (data) {
@@ -36,26 +38,49 @@ export const UserPreview = ({ profile, setActiveProfile, setDiscoverList, setRes
     })
 
     return (
-        <Box sx={{ position: 'fixed' }}>
+        <Box sx={{ position: { xs: 'initial', md: 'fixed' }, width: { xs: '100%', md: 'auto' } }}>
             <Wrapper>
                 <Grid container spacing={2.5}>
                     <Grid item xs={12}>
-                        <Grid container spacing={2.25}>
-                            <Grid item xs={6}>
-                                <img src={profile?.images[0].src} alt={profile?.images[0].alt} className="main-image" />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Grid container spacing={2.25}>
-                                    {profile?.images.slice(1).map((item) => {
-                                        return (
-                                            <Grid item xs={6} key={item.src}>
-                                                <img src={item.src} alt={item.alt} className="small-image" />
-                                            </Grid>
-                                        )
-                                    })}
+                        <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+                            <Slider
+                                className="mySwiper"
+                                pagination={{
+                                    clickable: true,
+                                }}
+                                slidesPerView={1}
+                                grabCursor={true}
+                                modules={[Pagination]}
+                            >
+                                {profile?.images.map((img) => (
+                                    <SwiperSlide key={img._id}>
+                                        <img src={img.src} alt={img.alt} />
+                                    </SwiperSlide>
+                                ))}
+                            </Slider>
+                        </Box>
+                        <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+                            <Grid container spacing={2.25}>
+                                <Grid item xs={6}>
+                                    <img
+                                        src={profile?.images[0].src}
+                                        alt={profile?.images[0].alt}
+                                        className="main-image"
+                                    />
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <Grid container spacing={2.25}>
+                                        {profile?.images.slice(1).map((item) => {
+                                            return (
+                                                <Grid item xs={6} key={item.src}>
+                                                    <img src={item.src} alt={item.alt} className="small-image" />
+                                                </Grid>
+                                            )
+                                        })}
+                                    </Grid>
                                 </Grid>
                             </Grid>
-                        </Grid>
+                        </Box>
                     </Grid>
                     <Grid item xs={12}>
                         <YellowBox>
