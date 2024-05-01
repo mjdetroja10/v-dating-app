@@ -1,16 +1,15 @@
-import { actionList, userDetailList } from 'Application/Constants/DiscoverConstant'
+import { actionList } from 'Application/Constants/DiscoverConstant'
 import { useAuth } from 'Application/Hooks/useAuth'
 import { useFormSubmit } from 'Application/Hooks/useFormSubmit'
-import { ProgressBar } from 'Application/Molecules/Atoms/ProgressBar/ProgressBar'
-import { matchInterestValue } from 'Application/Utils/GeneralUtils'
 import { SendFriendRequest } from 'Infrasctructure/store/requests/SendFriendRequest'
 import PropTypes from 'prop-types'
 import { Pagination } from 'swiper/modules'
 import { SwiperSlide } from 'swiper/react'
 
-import { Box, Grid, Stack, Typography } from '@mui/material'
+import { Box, Grid, Typography } from '@mui/material'
 
-import { ActionWrapper, Wrapper, InterestBox, YellowBox, ActionButton, Slider } from './UserPreview.styled'
+import { UserDetailsBox } from './UserDetailsBox/UserDetailsBox'
+import { ActionWrapper, Wrapper, ActionButton, Slider } from './UserPreview.styled'
 
 const handleSuccess = (profile, setDiscoverList, setResponse, setActiveProfile) => (data) => {
     if (data) {
@@ -83,48 +82,7 @@ export const UserPreview = ({ profile, setActiveProfile, setDiscoverList, setRes
                         </Box>
                     </Grid>
                     <Grid item xs={12}>
-                        <YellowBox>
-                            <Stack direction="row" justifyContent="space-between" alignItems="center">
-                                <Stack direction="row" gap={1.5}>
-                                    <Typography variant="h4" color="primary.main" fontWeight={600}>
-                                        {profile.firstName}
-                                    </Typography>
-                                    <Typography variant="h4" color="primary.main" fontWeight={400}>
-                                        {profile.age}
-                                    </Typography>
-                                </Stack>
-
-                                <ProgressBar value={matchInterestValue(userDetails?.interests, profile?.interests)} />
-                            </Stack>
-
-                            <Stack gap={0.5}>
-                                {userDetailList(profile).map(({ title, icon }) => (
-                                    <Stack direction="row" alignItems="center" gap={0.75} key={title}>
-                                        {icon}
-                                        <Typography variant="body2" fontWeight={300} color="black.medium">
-                                            {title}
-                                        </Typography>
-                                    </Stack>
-                                ))}
-                            </Stack>
-
-                            <Box sx={{ maxWidth: '100%' }}>
-                                <Typography variant="body1" fontWeight={400} color="primary.main" mb={1.5}>
-                                    Interests
-                                </Typography>
-
-                                <Stack direction="row" gap={2.5} sx={{ flexWrap: 'wrap' }}>
-                                    {profile.interests.map((interest) => (
-                                        <InterestBox
-                                            key={interest}
-                                            className={userDetails?.interests.includes(interest) ? 'active' : ''}
-                                        >
-                                            {interest}
-                                        </InterestBox>
-                                    ))}
-                                </Stack>
-                            </Box>
-                        </YellowBox>
+                        <UserDetailsBox profile={profile} compareInterests={userDetails?.interests} />
                     </Grid>
                 </Grid>
             </Wrapper>

@@ -23,6 +23,7 @@ export const theme = createTheme({
             medium: ' #0C0E10',
             dark: '#2E353E',
         },
+        yellow: { main: '#F9DB6D' },
     },
     typography: {
         fontFamily: 'Raleway, sans-serif',
